@@ -99,11 +99,17 @@ function navigate(dir) {
 
 // ── Render ──
 function formatProblemText(raw) {
-  // AMC answer choices look like: $\textbf{(A) }...\qquad\textbf{(B) }...$
-  // Split on \qquad inside math so each choice gets its own line
-  return raw.replace(
+  // Escape HTML special chars first
+  const escaped = raw
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // AMC answer choices: $\textbf{(A) }...\qquad\textbf{(B) }...$
+  // Replace \qquad between choices with a line break so each choice wraps
+  return escaped.replace(
     /(\$[^$]*\\qquad[^$]*\$)/g,
-    (match) => match.replace(/\\qquad/g, '$\n$')
+    (match) => match.replace(/\\qquad/g, '$<br>$')
   );
 }
 function renderProblem() {
@@ -113,7 +119,7 @@ function renderProblem() {
   contestLabel.textContent = `${state.contest} ${state.year}`;
   probCounter.textContent = `Problem ${p.num} of ${total}`;
 
-  problemText.textContent = formatProblemText(p.problem);
+  problemText.innerHTML = formatProblemText(p.problem);
   solutionText.textContent = p.solution;
 
   // Hide solution
