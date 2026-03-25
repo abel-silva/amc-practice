@@ -60,6 +60,16 @@ select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 16px center;
+  /* prevent horizontal overflow on mobile */
+  white-space: normal;
+  word-break: break-word;
+  height: auto;
+  min-height: 50px;
+}
+
+select option {
+  white-space: normal;
+  word-break: break-word;
 }
 
 select:focus { outline: none; border-color: #5b6af0; }
@@ -104,6 +114,17 @@ select:focus { outline: none; border-color: #5b6af0; }
 }
 
 .btn-secondary:hover { background: #24242e; }
+
+.btn-chatgpt {
+  flex: 1;
+  padding: 13px 10px;
+  background: #1a3a2a;
+  color: #4ade80;
+  border: 1px solid #2a5a3a;
+  font-size: 0.9rem;
+}
+
+.btn-chatgpt:hover { background: #1f4a32; }
 
 .btn-nav {
   flex: 1;

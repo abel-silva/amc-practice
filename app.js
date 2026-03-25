@@ -24,6 +24,7 @@ const solutionBox   = document.getElementById("solution-box");
 const solutionText  = document.getElementById("solution-text");
 const btnSolution   = document.getElementById("btn-solution");
 const btnCopy       = document.getElementById("btn-copy");
+const btnChatGPT    = document.getElementById("btn-chatgpt");
 const btnPrev       = document.getElementById("btn-prev");
 const btnNext       = document.getElementById("btn-next");
 const copyToast     = document.getElementById("copy-toast");
@@ -46,6 +47,7 @@ function init() {
   btnBack.addEventListener("click", goBack);
   btnSolution.addEventListener("click", toggleSolution);
   btnCopy.addEventListener("click", copyProblem);
+  btnChatGPT.addEventListener("click", askChatGPT);
   btnPrev.addEventListener("click", () => navigate(-1));
   btnNext.addEventListener("click", () => navigate(1));
 }
@@ -129,10 +131,32 @@ function toggleSolution() {
 }
 
 // ── Copy ──
-function copyProblem() {
+function problemPrompt() {
   const p = state.problems[state.index];
-  const text = `${state.contest} ${state.year} — Problem ${p.num}\n\n${p.problem}`;
+  return `${state.contest} ${state.year} — Problem ${p.num}\n\n${p.problem}`;
+}
 
+function chatGPTPrompt() {
+  const p = state.problems[state.index];
+  return `I am studying for math competitions (${state.contest}). Please help me with the following problem:
+
+${state.contest} ${state.year} — Problem ${p.num}
+
+${p.problem}
+
+Please do the following:
+1. Solve the problem step by step with a clear, detailed explanation.
+2. Identify every mathematical concept, theorem, or technique used in the solution.
+3. For each concept or theorem, explain it from the ground up — assume I may not know it. Include:
+   - A clear definition
+   - A proof or derivation (from first principles where possible)
+   - Intuition for why it works
+   - Any prerequisite concepts I should understand first
+4. Suggest related topics I should study to deeply understand this type of problem.`;
+}
+
+function copyProblem() {
+  const text = problemPrompt();
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(showToast).catch(() => fallbackCopy(text));
   } else {
@@ -140,7 +164,25 @@ function copyProblem() {
   }
 }
 
-function fallbackCopy(text) {
+function askChatGPT() {
+  const text = chatGPTPrompt();
+  const copy = navigator.clipboard && navigator.clipboard.writeText
+    ? navigator.clipboard.writeText(text)
+    : Promise.resolve(fallbackCopy(text, true));
+
+  copy.then(() => {
+    showToast("Copied — paste into ChatGPT");
+    // Small delay so clipboard is ready before switching apps
+    setTimeout(() => {
+      window.open("https://chat.openai.com/", "_blank");
+    }, 300);
+  }).catch(() => {
+    fallbackCopy(text, true);
+    setTimeout(() => window.open("https://chat.openai.com/", "_blank"), 300);
+  });
+}
+
+function fallbackCopy(text, silent = false) {
   const ta = document.createElement("textarea");
   ta.value = text;
   ta.style.position = "fixed";
@@ -148,13 +190,14 @@ function fallbackCopy(text) {
   document.body.appendChild(ta);
   ta.focus();
   ta.select();
-  try { document.execCommand("copy"); showToast(); } catch (e) { alert("Copy failed — try long-pressing the problem text."); }
+  try { document.execCommand("copy"); if (!silent) showToast(); } catch (e) { alert("Copy failed — try long-pressing the problem text."); }
   document.body.removeChild(ta);
 }
 
-function showToast() {
+function showToast(msg = "Copied to clipboard") {
+  copyToast.textContent = msg;
   copyToast.classList.remove("hidden");
-  setTimeout(() => copyToast.classList.add("hidden"), 2000);
+  setTimeout(() => copyToast.classList.add("hidden"), 2500);
 }
 
 // ── Start ──
