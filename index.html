@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>AMC / AIME Practice</title>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Selection Screen -->
+    <div id="screen-select" class="screen active">
+      <h1>AMC / AIME</h1>
+      <p class="subtitle">Math Competition Practice</p>
+      <div class="select-group">
+        <label>Competition</label>
+        <select id="sel-contest"></select>
+      </div>
+      <div class="select-group">
+        <label>Year</label>
+        <select id="sel-year"></select>
+      </div>
+      <button id="btn-start" class="btn btn-primary">Start</button>
+    </div>
+
+    <!-- Problem Screen -->
+    <div id="screen-problem" class="screen">
+      <div class="top-bar">
+        <button id="btn-back" class="btn btn-ghost">← Back</button>
+        <span id="contest-label"></span>
+      </div>
+
+      <div class="progress-bar">
+        <span id="prob-counter"></span>
+      </div>
+
+      <div id="problem-box" class="content-box">
+        <div id="problem-text"></div>
+      </div>
+
+      <div id="solution-box" class="content-box hidden">
+        <div class="solution-label">Solution</div>
+        <div id="solution-text"></div>
+      </div>
+
+      <div class="action-row">
+        <button id="btn-solution" class="btn btn-secondary">View Solution</button>
+        <button id="btn-copy" class="btn btn-secondary">Copy Problem</button>
+      </div>
+
+      <div id="copy-toast" class="toast hidden">Copied to clipboard</div>
+
+      <div class="nav-row">
+        <button id="btn-prev" class="btn btn-nav">← Prev</button>
+        <button id="btn-next" class="btn btn-nav">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

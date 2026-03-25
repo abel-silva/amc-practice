@@ -1,0 +1,188 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0f0f13;
+  color: #e8e8f0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#app {
+  width: 100%;
+  max-width: 680px;
+  padding: 24px 16px 48px;
+}
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── Selection Screen ── */
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 48px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #888;
+  margin: 6px 0 40px;
+  font-size: 0.95rem;
+}
+
+.select-group {
+  margin-bottom: 20px;
+}
+
+.select-group label {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+select {
+  width: 100%;
+  padding: 14px 16px;
+  background: #1c1c24;
+  border: 1px solid #2e2e3a;
+  border-radius: 10px;
+  color: #e8e8f0;
+  font-size: 1rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+select:focus { outline: none; border-color: #5b6af0; }
+
+/* ── Buttons ── */
+.btn {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: opacity 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active { transform: scale(0.97); opacity: 0.85; }
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  background: #5b6af0;
+  color: #fff;
+  margin-top: 12px;
+  font-size: 1.05rem;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #888;
+  padding: 8px 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  flex: 1;
+  padding: 13px 10px;
+  background: #1c1c24;
+  color: #c8c8e0;
+  border: 1px solid #2e2e3a;
+  font-size: 0.9rem;
+}
+
+.btn-secondary:hover { background: #24242e; }
+
+.btn-nav {
+  flex: 1;
+  padding: 15px 10px;
+  background: #1c1c24;
+  color: #e8e8f0;
+  border: 1px solid #2e2e3a;
+  font-size: 0.95rem;
+}
+
+.btn-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ── Problem Screen ── */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+#contest-label {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.progress-bar {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+}
+
+.content-box {
+  background: #1c1c24;
+  border: 1px solid #2e2e3a;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 14px;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.solution-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #5b6af0;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.hidden { display: none !important; }
+
+.action-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.nav-row {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── Toast ── */
+.toast {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #5b6af0;
+  padding: 8px;
+  margin-bottom: 8px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ── MathJax overrides ── */
+mjx-container { overflow-x: auto; max-width: 100%; }
