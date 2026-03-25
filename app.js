@@ -98,18 +98,25 @@ function navigate(dir) {
 }
 
 // ── Render ──
-function formatProblemText(raw) {
-  // Escape HTML special chars first
-  const escaped = raw
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-
-  // Put a <br> before the answer choices block which always starts with $\textbf{(A)
-  // Then replace every \qquad (choice separator) with a line break
-  return escaped
-    .replace('$\\textbf{(A)', '<br>$\\textbf{(A)')
-    .replace(/\\qquad/g, '$<br>$');
+function renderParts(parts, container) {
+  container.innerHTML = '';
+  parts.forEach(part => {
+    if (part.type === 'image') {
+      const img = document.createElement('img');
+      img.src = part.src;
+      img.style.cssText = 'max-width:100%;display:block;margin:12px auto;border-radius:6px;';
+      container.appendChild(img);
+    } else {
+      const span = document.createElement('span');
+      // Put <br> before answer choices (A) and split \qquad separators
+      let html = part.content
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace('$\\textbf{(A)', '<br>$\\textbf{(A)')
+        .replace(/\\qquad/g, '$<br>$');
+      span.innerHTML = html;
+      container.appendChild(span);
+    }
+  });
 }
 function renderProblem() {
   const p = state.problems[state.index];
@@ -118,8 +125,8 @@ function renderProblem() {
   contestLabel.textContent = `${state.contest} ${state.year}`;
   probCounter.textContent = `Problem ${p.num} of ${total}`;
 
-  problemText.innerHTML = formatProblemText(p.problem);
-  solutionText.textContent = p.solution;
+  renderParts(p.parts, problemText);
+  renderParts(p.solution_parts, solutionText);
 
   // Hide solution
   solutionBox.classList.add("hidden");
@@ -146,16 +153,18 @@ function toggleSolution() {
 // ── Copy ──
 function problemPrompt() {
   const p = state.problems[state.index];
-  return `${state.contest} ${state.year} — Problem ${p.num}\n\n${p.problem}`;
+  const text = p.parts.filter(x => x.type === 'text').map(x => x.content).join(' ');
+  return `${state.contest} ${state.year} — Problem ${p.num}\n\n${text}`;
 }
 
 function chatGPTPrompt() {
   const p = state.problems[state.index];
+  const text = p.parts.filter(x => x.type === 'text').map(x => x.content).join(' ');
   return `I am studying for math competitions (${state.contest}). Please help me with the following problem:
 
 ${state.contest} ${state.year} — Problem ${p.num}
 
-${p.problem}
+${text}
 
 Please do the following:
 1. Solve the problem step by step with a clear, detailed explanation.
