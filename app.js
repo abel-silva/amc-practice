@@ -109,7 +109,7 @@ function formatProblemText(raw) {
   // Replace \qquad between choices with a line break so each choice wraps
   return escaped.replace(
     /(\$[^$]*\\qquad[^$]*\$)/g,
-    (match) => match.replace(/\\qquad/g, '$<br>$')
+    (match) => '<br>' + match.replace(/\\qquad/g, '$<br>$')
   );
 }
 function renderProblem() {
