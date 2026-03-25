@@ -108,7 +108,7 @@ function formatProblemText(raw) {
   // Put a <br> before the answer choices block which always starts with $\textbf{(A)
   // Then replace every \qquad (choice separator) with a line break
   return escaped
-    .replace(/\$\\textbf\{\\?\(A\)/g, '<br>$\\textbf{(A)')
+    .replace('$\\textbf{(A)', '<br>$\\textbf{(A)')
     .replace(/\\qquad/g, '$<br>$');
 }
 function renderProblem() {
