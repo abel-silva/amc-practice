@@ -98,6 +98,14 @@ function navigate(dir) {
 }
 
 // ── Render ──
+function formatProblemText(raw) {
+  // AMC answer choices look like: $\textbf{(A) }...\qquad\textbf{(B) }...$
+  // Split on \qquad inside math so each choice gets its own line
+  return raw.replace(
+    /(\$[^$]*\\qquad[^$]*\$)/g,
+    (match) => match.replace(/\\qquad/g, '$\n$')
+  );
+}
 function renderProblem() {
   const p = state.problems[state.index];
   const total = state.problems.length;
@@ -105,7 +113,7 @@ function renderProblem() {
   contestLabel.textContent = `${state.contest} ${state.year}`;
   probCounter.textContent = `Problem ${p.num} of ${total}`;
 
-  problemText.textContent = p.problem;
+  problemText.textContent = formatProblemText(p.problem);
   solutionText.textContent = p.solution;
 
   // Hide solution

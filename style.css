@@ -169,6 +169,9 @@ select:focus { outline: none; border-color: #5b6af0; }
   margin-bottom: 14px;
   line-height: 1.7;
   font-size: 1rem;
+  overflow-x: hidden;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .solution-label {
@@ -206,4 +209,17 @@ select:focus { outline: none; border-color: #5b6af0; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* ── MathJax overrides ── */
-mjx-container { overflow-x: auto; max-width: 100%; }
+mjx-container {
+  overflow-x: auto;
+  max-width: 100%;
+  display: block !important;
+}
+
+mjx-container[display="true"] {
+  margin: 0.5em 0;
+}
+
+/* Force answer choices row to wrap */
+mjx-container mjx-math {
+  white-space: normal !important;
+}
