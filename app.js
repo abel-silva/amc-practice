@@ -105,12 +105,11 @@ function formatProblemText(raw) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 
-  // AMC answer choices: $\textbf{(A) }...\qquad\textbf{(B) }...$
-  // Replace \qquad between choices with a line break so each choice wraps
-  return escaped.replace(
-    /(\$[^$]*\\qquad[^$]*\$)/g,
-    (match) => '<br>' + match.replace(/\\qquad/g, '$<br>$')
-  );
+  // Put a <br> before the answer choices block which always starts with $\textbf{(A)
+  // Then replace every \qquad (choice separator) with a line break
+  return escaped
+    .replace(/\$\\textbf\{\\?\(A\)/g, '<br>$\\textbf{(A)')
+    .replace(/\\qquad/g, '$<br>$');
 }
 function renderProblem() {
   const p = state.problems[state.index];
