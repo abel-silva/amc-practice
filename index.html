@@ -35,10 +35,7 @@
       <div class="top-bar">
         <button id="btn-back" class="btn btn-ghost">← Back</button>
         <span id="contest-label"></span>
-      </div>
-
-      <div class="progress-bar">
-        <span id="prob-counter"></span>
+        <select id="sel-jump" class="jump-select"></select>
       </div>
 
       <div id="problem-box" class="content-box">
@@ -57,11 +54,13 @@
       </div>
 
       <div id="copy-toast" class="toast hidden">Copied to clipboard</div>
+    </div>
 
-      <div class="nav-row">
-        <button id="btn-prev" class="btn btn-nav">← Prev</button>
-        <button id="btn-next" class="btn btn-nav">Next →</button>
-      </div>
+    <!-- Fixed bottom nav (always visible on problem screen) -->
+    <div id="bottom-nav" class="bottom-nav hidden">
+      <button id="btn-prev" class="btn btn-nav">← Prev</button>
+      <span id="prob-counter" class="nav-counter"></span>
+      <button id="btn-next" class="btn btn-nav">Next →</button>
     </div>
   </div>
 

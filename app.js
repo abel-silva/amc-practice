@@ -18,7 +18,6 @@ const selYear       = document.getElementById("sel-year");
 const btnStart      = document.getElementById("btn-start");
 const btnBack       = document.getElementById("btn-back");
 const contestLabel  = document.getElementById("contest-label");
-const probCounter   = document.getElementById("prob-counter");
 const problemText   = document.getElementById("problem-text");
 const solutionBox   = document.getElementById("solution-box");
 const solutionText  = document.getElementById("solution-text");
@@ -28,6 +27,9 @@ const btnChatGPT    = document.getElementById("btn-chatgpt");
 const btnPrev       = document.getElementById("btn-prev");
 const btnNext       = document.getElementById("btn-next");
 const copyToast     = document.getElementById("copy-toast");
+const bottomNav     = document.getElementById("bottom-nav");
+const probCounter   = document.getElementById("prob-counter");
+const selJump       = document.getElementById("sel-jump");
 
 // ── Init ──
 function init() {
@@ -50,6 +52,15 @@ function init() {
   btnChatGPT.addEventListener("click", askChatGPT);
   btnPrev.addEventListener("click", () => navigate(-1));
   btnNext.addEventListener("click", () => navigate(1));
+  selJump.addEventListener("change", () => {
+    const idx = parseInt(selJump.value);
+    if (!isNaN(idx)) {
+      state.index = idx;
+      state.solutionVisible = false;
+      renderProblem();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  });
 }
 
 function updateYears() {
@@ -68,6 +79,7 @@ function updateYears() {
 function showScreen(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
+  bottomNav.classList.toggle("hidden", id !== "screen-problem");
 }
 
 function startSession() {
@@ -80,6 +92,16 @@ function startSession() {
   }
   state = { contest, year, problems, index: 0, solutionVisible: false };
   showScreen("screen-problem");
+
+  // Populate jump dropdown
+  selJump.innerHTML = "";
+  problems.forEach((p, i) => {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = `#${p.num}`;
+    selJump.appendChild(opt);
+  });
+
   renderProblem();
 }
 
@@ -123,7 +145,10 @@ function renderProblem() {
   const total = state.problems.length;
 
   contestLabel.textContent = `${state.contest} ${state.year}`;
-  probCounter.textContent = `Problem ${p.num} of ${total}`;
+  probCounter.textContent = `${state.index + 1} / ${total}`;
+
+  // Sync jump dropdown
+  selJump.value = state.index;
 
   renderParts(p.parts, problemText);
   renderParts(p.solution_parts, solutionText);
